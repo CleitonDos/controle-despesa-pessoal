@@ -52,7 +52,7 @@ public class ControleDespesaPessoal {
         }
     }
 
-    // PÁGINA INICIAL (Tabela, Métricas e Ações)
+    // PÁGINA INICIAL COM SUPORTE AOS FILTROS
     static class PaginaInicialHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
@@ -92,7 +92,17 @@ public class ControleDespesaPessoal {
                         classeLinha = "pago-row";
                     }
 
-                    linhas.append("<tr class=\"").append(classeLinha).append("\" data-pago=\"").append(isPago).append("\">");
+                    // Extrai mês e ano para alimentar o filtro do HTML
+                    String mesStr = String.format("%02d", d.getDataVencimento().getMonthValue());
+                    String anoStr = String.valueOf(d.getDataVencimento().getYear());
+
+                    linhas.append("<tr class=\"").append(classeLinha).append("\" ")
+                          .append("data-pago=\"").append(isPago).append("\" ")
+                          .append("data-tipo=\"").append(tipo).append("\" ")
+                          .append("data-valor=\"").append(d.getValor()).append("\" ")
+                          .append("data-mes=\"").append(mesStr).append("\" ")
+                          .append("data-ano=\"").append(anoStr).append("\">");
+
                     linhas.append("<td>").append(d.getDescricao()).append("</td>");
 
                     // Badge Tipo
@@ -170,15 +180,14 @@ public class ControleDespesaPessoal {
                 }
 
             } catch (IOException e) {
-                // Fechamento de conexão ou recarregamento rápido pelo navegador é tolerado sem logs
+                // Fechamento de conexão ignorado
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    // CADASTRO
-    // CADASTRO COM SUPORTE A PARCELAS
+    // CADASTRO COM SUPORTE A PARCELAS (AUTOMATIZAÇÃO)
     static class CadastroHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
@@ -191,7 +200,6 @@ public class ControleDespesaPessoal {
                     double valor = Double.parseDouble(dados.getOrDefault("valor", "0").replace(",", "."));
                     LocalDate dataVencBase = LocalDate.parse(dados.get("dataVencimento"));
 
-                    // Quantidade de parcelas (padrão 1 se vier vazio)
                     String parcelasStr = dados.getOrDefault("parcelas", "1");
                     int totalParcelas = 1;
                     try {
@@ -206,17 +214,13 @@ public class ControleDespesaPessoal {
                             ? LocalDate.parse(dataPag) 
                             : null;
 
-                    // Se for apenas 1 parcela (à vista / sem repetição)
                     if (totalParcelas == 1) {
                         Despesa d = new Despesa(descBase, tipo, categoria, valor, dataVencBase, dataPagamento);
                         dao.inserir(d);
                     } else {
-                        // Se for parcelado, gera todas as parcelas avançando os meses
                         for (int i = 1; i <= totalParcelas; i++) {
                             String descParcelada = String.format("%s (%02d/%02d)", descBase, i, totalParcelas);
                             LocalDate vencimentoParcela = dataVencBase.plusMonths(i - 1);
-                            
-                            // Apenas a 1ª parcela recebe a data de pagamento se ela foi preenchida agora
                             LocalDate pagParcela = (i == 1) ? dataPagamento : null;
 
                             Despesa d = new Despesa(descParcelada, tipo, categoria, valor, vencimentoParcela, pagParcela);
@@ -327,9 +331,7 @@ public class ControleDespesaPessoal {
             exchange.getResponseHeaders().set("Location", rota);
             exchange.sendResponseHeaders(303, -1);
         } catch (IOException e) {
-            // Conexão encerrada pelo cliente durante redirect
+            // Conexão encerrada pelo cliente
         }
     }
-    
-    
 }
