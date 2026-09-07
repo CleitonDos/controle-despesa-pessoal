@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>💰 Controle Financeiro • Dark Mode</title>
+    <title>💰 Controle Financeiro</title>
 
-    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2488/2488749.png?v=2">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2488/2488749.png?v=2">
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2488/2488749.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2488/2488749.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,413 +14,136 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: #0b0d14;
-            min-height: 100vh;
-            padding: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            color: #e8edf5;
-            -webkit-tap-highlight-color: transparent;
+        
+        body { 
+            font-family: 'Inter', system-ui, sans-serif; 
+            background: #0b0d14; 
+            min-height: 100vh; 
+            padding: 12px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start; 
+            color: #e8edf5; 
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1360px;
-            width: 100%;
-            background: #121626;
-            border-radius: 16px;
-            padding: 24px 28px;
-            border: 1px solid #1e2640;
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+        .container { 
+            width: 100%; 
+            max-width: 1360px; 
+            background: #121626; 
+            border-radius: 16px; 
+            padding: 20px; 
+            border: 1px solid #1e2640; 
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6); 
+            box-sizing: border-box;
         }
-
+        
         /* CABEÇALHO */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .header-left .logo-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #7c3aed, #00d2ff);
-            border-radius: 10px;
-            color: #0b0d14;
-            font-size: 18px;
-        }
-        .header-left h1 {
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: -0.3px;
-            background: linear-gradient(135deg, #ffffff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .header-left .barra {
-            width: 4px;
-            height: 28px;
-            background: linear-gradient(180deg, #7c3aed, #00d2ff);
-            border-radius: 4px;
-        }
-        .btn-lancar {
-            background: #00d2ff;
-            color: #0b0d14;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.2s;
-            font-family: 'Inter', sans-serif;
-        }
-        .btn-lancar:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 20px rgba(0, 210, 255, 0.30);
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            gap: 14px; 
+            margin-bottom: 20px; 
         }
 
-        /* CARDS DE MÉTRICAS */
-        .metricas-row {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin-bottom: 18px;
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .header-left .logo-icon { 
+            display: flex; align-items: center; justify-content: center; 
+            width: 38px; height: 38px; 
+            background: linear-gradient(135deg, #7c3aed, #00d2ff); 
+            border-radius: 10px; color: #0b0d14; font-size: 18px; 
         }
-        .card-metrica {
-            background: #1c223a;
-            border-radius: 12px;
-            padding: 12px 14px;
-            border: 1px solid #282f4a;
-            text-align: center;
+        .header-left h1 { 
+            font-size: 18px; font-weight: 800; 
+            background: linear-gradient(135deg, #ffffff, #94a3b8); 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
         }
-        .card-metrica .label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            color: #8892a8;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
+        .header-left .barra { width: 4px; height: 28px; background: linear-gradient(180deg, #7c3aed, #00d2ff); border-radius: 4px; }
+        
+        .btn-lancar { 
+            background: #00d2ff; color: #0b0d14; border: none; 
+            padding: 10px 20px; border-radius: 50px; font-weight: 700; font-size: 13px; 
+            cursor: pointer; display: flex; align-items: center; gap: 8px; 
+            transition: 0.25s; font-family: 'Inter', sans-serif; 
         }
-        .card-metrica .valor {
-            font-size: 18px;
-            font-weight: 700;
-            margin-top: 4px;
+        .btn-lancar:hover { transform: scale(1.02); }
+
+        /* CARDS MÉTRICAS */
+        .metricas-row { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); 
+            gap: 10px; 
+            margin-bottom: 16px; 
         }
-        .valor.entrada { color: #10b981; }
-        .valor.saida, .valor.saldo { color: #f43f5e; }
-        .valor.pago { color: #00d2ff; }
+        .card-metrica { 
+            background: #1c223a; border-radius: 12px; padding: 12px; 
+            border: 1px solid #282f4a; text-align: center; 
+        }
+        .card-metrica .label { 
+            display: flex; align-items: center; justify-content: center; gap: 4px; 
+            color: #8892a8; font-size: 10px; font-weight: 600; text-transform: uppercase; 
+        }
+        .card-metrica .valor { font-size: 16px; font-weight: 700; margin-top: 4px; }
+        .valor.entrada { color: #10b981; } 
+        .valor.saida, .valor.saldo { color: #f43f5e; } 
+        .valor.pago { color: #00d2ff; } 
         .valor.pendente { color: #fbbf24; }
-
+        
         /* FILTROS */
-        .filtros-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #1c223a;
-            border-radius: 12px;
-            padding: 12px 16px;
-            margin-bottom: 18px;
-            border: 1px solid #282f4a;
+        .filtros-row { 
+            display: flex; align-items: center; justify-content: space-between; 
+            background: #1c223a; border-radius: 12px; padding: 12px 16px; 
+            margin-bottom: 16px; border: 1px solid #282f4a; 
         }
-        .filtro-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #8892a8;
-            font-size: 13px;
-            cursor: pointer;
-            user-select: none;
-        }
-        .filtro-checkbox input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #00d2ff;
-        }
+        .filtro-checkbox { display: flex; align-items: center; gap: 8px; color: #8892a8; font-size: 13px; cursor: pointer; }
 
-        /* TABELA DESKTOP */
-        .table-wrapper {
-            overflow-x: auto;
-            border-radius: 12px;
-            border: 1px solid #1e2640;
+        /* TABELA COM SCROLL INTERNO */
+        .table-wrapper { 
+            width: 100%; 
+            overflow-x: auto; 
+            -webkit-overflow-scrolling: touch; 
+            border-radius: 12px; 
+            border: 1px solid #1e2640; 
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-            min-width: 800px;
-        }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 650px; }
         thead { background: #0f1322; }
-        thead th {
-            padding: 12px 14px;
-            text-align: left;
-            color: #5c9df5;
-            font-weight: 600;
-            font-size: 12px;
-            text-transform: uppercase;
-            border-bottom: 1px solid #1e2640;
-        }
-        tbody td {
-            padding: 10px 14px;
-            border-bottom: 1px solid #232a42;
-            color: #c8d0e0;
-            vertical-align: middle;
-        }
+        thead th { padding: 10px 12px; text-align: left; color: #5c9df5; font-weight: 600; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid #1e2640; }
+        tbody td { padding: 10px 12px; border-bottom: 1px solid #232a42; color: #c8d0e0; vertical-align: middle; }
 
-        /* BADGES */
-        .badge-tipo {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 3px 12px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 600;
-        }
+        .badge-tipo { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 50px; font-size: 11px; font-weight: 600; }
         .badge-tipo.receita { background: rgba(16, 185, 129, 0.12); color: #10b981; }
         .badge-tipo.despesa { background: rgba(244, 63, 94, 0.12); color: #f43f5e; }
         .badge-tipo.cofre { background: rgba(92, 157, 245, 0.10); color: #5c9df5; }
-        .badge-cat {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 50px;
-            font-size: 11px;
-            font-weight: 600;
-            border: 1px solid #282f4a;
-        }
-        .badge-cat.fixa { color: #5c9df5; }
-        .badge-cat.variavel { color: #fbbf24; }
-        .valor-positivo { color: #10b981; font-weight: 600; }
-        .valor-negativo { color: #f43f5e; font-weight: 600; }
-        tbody tr.receita-row { background: rgba(16, 185, 129, 0.04); }
-        tbody tr.pago-row { background: rgba(0, 210, 255, 0.04); }
+        .badge-cat { padding: 2px 10px; border-radius: 50px; font-size: 10px; font-weight: 600; border: 1px solid #282f4a; }
+        .badge-cat.fixa { color: #5c9df5; } .badge-cat.variavel { color: #fbbf24; }
+        .valor-positivo { color: #10b981; font-weight: 600; } .valor-negativo { color: #f43f5e; font-weight: 600; }
+        tbody tr.receita-row { background: rgba(16, 185, 129, 0.04); } tbody tr.pago-row { background: rgba(0, 210, 255, 0.04); }
 
-        /* AÇÕES */
-        .btn-acao {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 8px;
-            font-size: 14px;
-            border-radius: 6px;
-            transition: 0.2s;
-        }
-        .btn-edit { color: #5c9df5; }
-        .btn-edit:hover { background: rgba(92,157,245,0.15); }
-        .btn-del { color: #f43f5e; }
-        .btn-del:hover { background: rgba(244,63,94,0.15); }
-        .input-inline-date {
-            background: #0f1322;
-            border: 1px solid #282f4a;
-            color: #e8edf5;
-            padding: 6px 8px;
-            border-radius: 6px;
-            font-size: 12px;
-        }
-        .btn-inline-check {
-            background: #10b981;
-            color: #0b0d14;
-            border: none;
-            border-radius: 6px;
-            padding: 6px 10px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 700;
-            margin-left: 6px;
-        }
+        .btn-acao { background: none; border: none; cursor: pointer; padding: 6px; font-size: 13px; border-radius: 6px; }
+        .btn-edit { color: #5c9df5; } 
+        .btn-del { color: #f43f5e; margin-left: 6px; }
+        .input-inline-date { background: #0f1322; border: 1px solid #282f4a; color: #e8edf5; padding: 4px; border-radius: 6px; font-size: 11px; }
+        .btn-inline-check { background: #10b981; color: #0b0d14; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 11px; font-weight: 700; margin-left: 4px; }
 
         /* MODAIS */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.75);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 16px;
-            backdrop-filter: blur(4px);
-        }
-        .modal-content {
-            background: #121626;
-            border: 1px solid #1e2640;
-            border-radius: 16px;
-            padding: 20px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 12px 48px rgba(0,0,0,0.6);
-        }
-        .modal-content h2 {
-            margin-bottom: 16px;
-            font-size: 17px;
-            color: #e8edf5;
-            border-bottom: 1px solid #282f4a;
-            padding-bottom: 10px;
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 12px; }
+        .modal-content { background: #121626; border: 1px solid #1e2640; border-radius: 16px; padding: 20px; width: 100%; max-width: 420px; }
+        .modal-content h2 { margin-bottom: 16px; font-size: 16px; color: #e8edf5; border-bottom: 1px solid #282f4a; padding-bottom: 8px; }
         .form-group { margin-bottom: 12px; }
-        .form-group label {
-            display: block;
-            font-size: 11px;
-            color: #8892a8;
-            margin-bottom: 4px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            background: #0f1322;
-            border: 1px solid #282f4a;
-            border-radius: 8px;
-            padding: 10px;
-            color: #e8edf5;
-            font-size: 14px;
-            outline: none;
-        }
-        .form-group input:focus, .form-group select:focus { border-color: #00d2ff; }
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .btn-cancelar {
-            background: transparent;
-            color: #8892a8;
-            border: 1px solid #282f4a;
-            padding: 10px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 13px;
-        }
-        .btn-salvar {
-            background: #00d2ff;
-            color: #0b0d14;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 13px;
-        }
+        .form-group label { display: block; font-size: 11px; color: #8892a8; margin-bottom: 4px; font-weight: 600; }
+        .form-group input, .form-group select { width: 100%; background: #0f1322; border: 1px solid #282f4a; border-radius: 8px; padding: 8px 10px; color: #e8edf5; font-size: 13px; outline: none; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+        .btn-cancelar { background: transparent; color: #8892a8; border: 1px solid #282f4a; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; }
+        .btn-salvar { background: #00d2ff; color: #0b0d14; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px; }
 
-        /* ============================================================
-           ADAPTAÇÃO RESPONSIVA PARA SMARTPHONES (MOBILE FIRST)
-           ============================================================ */
-        @media (max-width: 768px) {
-            body { padding: 8px; }
-            .container { padding: 14px; border-radius: 12px; }
-            
-            .header {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 12px;
-            }
-            .header-left h1 { font-size: 18px; }
-            .btn-lancar {
-                justify-content: center;
-                padding: 12px;
-                font-size: 14px;
-            }
-
-            /* Métricas em grade 2x2 e o 5º ocupando a linha inteira */
-            .metricas-row {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
-            }
-            .card-metrica:last-child {
-                grid-column: span 2;
-            }
-            .card-metrica { padding: 10px; }
-            .card-metrica .valor { font-size: 16px; }
-
-            /* Transforma cada linha da tabela em um CARD no celular */
-            .table-wrapper {
-                border: none;
-                overflow-x: visible;
-            }
-            table, thead, tbody, th, td, tr {
-                display: block;
-            }
-            thead {
-                display: none; /* Esconde cabeçalho em formato coluna */
-            }
-            tbody tr {
-                background: #181e35;
-                border: 1px solid #263052;
-                border-radius: 12px;
-                padding: 12px 14px;
-                margin-bottom: 12px;
-                position: relative;
-            }
-            tbody tr:hover { background: #1c243f; }
-            
-            tbody td {
-                padding: 6px 0;
-                border: none;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                font-size: 13px;
-            }
-
-            /* Primeira linha do card: Descrição em destaque */
-            tbody td:nth-child(1) {
-                font-size: 15px;
-                font-weight: 700;
-                color: #ffffff;
-                border-bottom: 1px solid #232b47;
-                padding-bottom: 8px;
-                margin-bottom: 6px;
-                display: block;
-                word-break: break-word;
-            }
-
-            /* Rótulos automáticos para cada dado do card */
-            tbody td:nth-child(2)::before { content: "Tipo:"; color: #8892a8; font-size: 11px; font-weight: 600; }
-            tbody td:nth-child(3)::before { content: "Categoria:"; color: #8892a8; font-size: 11px; font-weight: 600; }
-            tbody td:nth-child(4)::before { content: "Valor:"; color: #8892a8; font-size: 11px; font-weight: 600; }
-            tbody td:nth-child(5)::before { content: "Vencimento:"; color: #8892a8; font-size: 11px; font-weight: 600; }
-            tbody td:nth-child(6)::before { content: "Pagamento:"; color: #8892a8; font-size: 11px; font-weight: 600; }
-            tbody td:nth-child(7) {
-                border-top: 1px solid #232b47;
-                padding-top: 10px;
-                margin-top: 6px;
-                justify-content: flex-end;
-                gap: 12px;
-            }
-            tbody td:nth-child(7)::before { content: "Ações:"; color: #8892a8; font-size: 11px; font-weight: 600; margin-right: auto; }
-
-            .input-inline-date {
-                max-width: 135px;
-                padding: 4px;
-            }
-            .btn-inline-check {
-                padding: 6px 8px;
-            }
-            .btn-acao {
-                padding: 8px 12px;
-                background: #0f1322;
-                border-radius: 8px;
-            }
+        /* RESPONSIVO ESPECÍFICO MOBILE */
+        @media (max-width: 600px) {
+            .container { padding: 14px; }
+            .header { flex-direction: column; align-items: stretch; gap: 12px; }
+            .btn-lancar { justify-content: center; width: 100%; }
+            .metricas-row { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
@@ -442,8 +165,8 @@
             <div class="card-metrica"><div class="label"><i class="fas fa-arrow-down" style="color: #10b981;"></i> Receita</div><div class="valor entrada">{{TOTAL_RECEITA}}</div></div>
             <div class="card-metrica"><div class="label"><i class="fas fa-arrow-up" style="color: #f43f5e;"></i> Despesa</div><div class="valor saida">{{TOTAL_DESPESA}}</div></div>
             <div class="card-metrica"><div class="label"><i class="fas fa-scale-balanced" style="color: #f43f5e;"></i> Saldo</div><div class="valor saldo">{{SALDO}}</div></div>
-            <div class="card-metrica"><div class="label"><i class="fas fa-check-circle" style="color: #00d2ff;"></i> Total Pago</div><div class="valor pago">{{TOTAL_PAGO}}</div></div>
-            <div class="card-metrica"><div class="label"><i class="fas fa-clock" style="color: #fbbf24;"></i> Total Pendente</div><div class="valor pendente">{{TOTAL_PENDENTE}}</div></div>
+            <div class="card-metrica"><div class="label"><i class="fas fa-check-circle" style="color: #00d2ff;"></i> Pago</div><div class="valor pago">{{TOTAL_PAGO}}</div></div>
+            <div class="card-metrica" style="grid-column: span 2;"><div class="label"><i class="fas fa-clock" style="color: #fbbf24;"></i> Pendente</div><div class="valor pendente">{{TOTAL_PENDENTE}}</div></div>
         </div>
 
         <div class="filtros-row">
@@ -480,7 +203,7 @@
             <form action="/cadastrar" method="POST">
                 <div class="form-group">
                     <label>Descrição</label>
-                    <input type="text" name="descricao" required placeholder="Ex: Conta de Energia">
+                    <input type="text" name="descricao" required placeholder="Ex: Conta de Luz">
                 </div>
                 <div style="display: flex; gap: 10px;">
                     <div class="form-group" style="flex: 1;">
