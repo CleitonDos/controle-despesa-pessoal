@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2488/2488749.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -91,12 +91,44 @@
         .valor.pago { color: #00d2ff; } 
         .valor.pendente { color: #fbbf24; }
         
-        /* FILTROS */
+        /* FILTROS (MÊS, ANO E PENDENTES) */
         .filtros-row { 
-            display: flex; align-items: center; justify-content: space-between; 
-            background: #1c223a; border-radius: 12px; padding: 12px 16px; 
-            margin-bottom: 16px; border: 1px solid #282f4a; 
+            display: flex; 
+            flex-wrap: wrap; 
+            align-items: center; 
+            justify-content: space-between; 
+            gap: 12px;
+            background: #1c223a; 
+            border-radius: 12px; 
+            padding: 12px 16px; 
+            margin-bottom: 16px; 
+            border: 1px solid #282f4a; 
         }
+        .filtros-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filtro-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #8892a8;
+            font-weight: 600;
+        }
+        .filtro-item select {
+            background: #0f1322;
+            border: 1px solid #282f4a;
+            color: #e8edf5;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            outline: none;
+            cursor: pointer;
+        }
+        .filtro-item select:focus { border-color: #00d2ff; }
         .filtro-checkbox { display: flex; align-items: center; gap: 8px; color: #8892a8; font-size: 13px; cursor: pointer; }
 
         /* TABELA RESPONSIVA */
@@ -144,6 +176,8 @@
             .header { flex-direction: column; align-items: stretch; gap: 12px; }
             .btn-lancar { justify-content: center; width: 100%; }
             .metricas-row { grid-template-columns: 1fr 1fr; }
+            .filtros-row { flex-direction: column; align-items: stretch; }
+            .filtros-left { justify-content: space-between; }
         }
     </style>
 </head>
@@ -162,14 +196,46 @@
         </div>
 
         <div class="metricas-row">
-            <div class="card-metrica"><div class="label"><i class="fas fa-arrow-down" style="color: #10b981;"></i> Receita</div><div class="valor entrada">{{TOTAL_RECEITA}}</div></div>
-            <div class="card-metrica"><div class="label"><i class="fas fa-arrow-up" style="color: #f43f5e;"></i> Despesa</div><div class="valor saida">{{TOTAL_DESPESA}}</div></div>
-            <div class="card-metrica"><div class="label"><i class="fas fa-scale-balanced" style="color: #f43f5e;"></i> Saldo</div><div class="valor saldo">{{SALDO}}</div></div>
-            <div class="card-metrica"><div class="label"><i class="fas fa-check-circle" style="color: #00d2ff;"></i> Pago</div><div class="valor pago">{{TOTAL_PAGO}}</div></div>
-            <div class="card-metrica" style="grid-column: span 2;"><div class="label"><i class="fas fa-clock" style="color: #fbbf24;"></i> Pendente</div><div class="valor pendente">{{TOTAL_PENDENTE}}</div></div>
+            <div class="card-metrica"><div class="label"><i class="fas fa-arrow-down" style="color: #10b981;"></i> Receita</div><div class="valor entrada" id="valReceita">R$ 0,00</div></div>
+            <div class="card-metrica"><div class="label"><i class="fas fa-arrow-up" style="color: #f43f5e;"></i> Despesa</div><div class="valor saida" id="valDespesa">R$ 0,00</div></div>
+            <div class="card-metrica"><div class="label"><i class="fas fa-scale-balanced" style="color: #f43f5e;"></i> Saldo</div><div class="valor saldo" id="valSaldo">R$ 0,00</div></div>
+            <div class="card-metrica"><div class="label"><i class="fas fa-check-circle" style="color: #00d2ff;"></i> Pago</div><div class="valor pago" id="valPago">R$ 0,00</div></div>
+            <div class="card-metrica" style="grid-column: span 2;"><div class="label"><i class="fas fa-clock" style="color: #fbbf24;"></i> Pendente</div><div class="valor pendente" id="valPendente">R$ 0,00</div></div>
         </div>
 
         <div class="filtros-row">
+            <div class="filtros-left">
+                <div class="filtro-item">
+                    <span><i class="fas fa-calendar-alt"></i> Mês:</span>
+                    <select id="filtroMes">
+                        <option value="todos">Todos</option>
+                        <option value="01">Janeiro</option>
+                        <option value="02">Fevereiro</option>
+                        <option value="03">Março</option>
+                        <option value="04">Abril</option>
+                        <option value="05">Maio</option>
+                        <option value="06">Junho</option>
+                        <option value="07">Julho</option>
+                        <option value="08">Agosto</option>
+                        <option value="09">Setembro</option>
+                        <option value="10">Outubro</option>
+                        <option value="11">Novembro</option>
+                        <option value="12">Dezembro</option>
+                    </select>
+                </div>
+                <div class="filtro-item">
+                    <span><i class="fas fa-calendar"></i> Ano:</span>
+                    <select id="filtroAno">
+                        <option value="todos">Todos</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>
+                    </select>
+                </div>
+            </div>
             <label class="filtro-checkbox">
                 <input type="checkbox" id="pendente">
                 <span>Mostrar Apenas Pendentes</span>
@@ -319,13 +385,76 @@
             document.getElementById('modalEditar').style.display = 'flex';
         }
 
-        const checkboxPendente = document.getElementById('pendente');
-        checkboxPendente.addEventListener('change', function() {
-            const pendentes = this.checked;
+        const selMes = document.getElementById('filtroMes');
+        const selAno = document.getElementById('filtroAno');
+        const checkPendente = document.getElementById('pendente');
+
+        // Formatação de Moeda BRL
+        const fmtMoeda = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+
+        // Função que filtra linhas e recalcula os cards
+        function aplicarFiltros() {
+            const mes = selMes.value;
+            const ano = selAno.value;
+            const apenasPendentes = checkPendente.checked;
+
+            let receita = 0;
+            let despesa = 0;
+            let pago = 0;
+            let pendente = 0;
+
             document.querySelectorAll('tbody tr').forEach(tr => {
-                const isPendente = tr.getAttribute('data-pago') === 'false';
-                tr.style.display = pendentes ? (isPendente ? '' : 'none') : '';
+                const trMes = tr.getAttribute('data-mes');
+                const trAno = tr.getAttribute('data-ano');
+                const isPago = tr.getAttribute('data-pago') === 'true';
+                const tipo = tr.getAttribute('data-tipo');
+                const valor = parseFloat(tr.getAttribute('data-valor') || '0');
+
+                let visivel = true;
+
+                if (mes !== 'todos' && trMes !== mes) visivel = false;
+                if (ano !== 'todos' && trAno !== ano) visivel = false;
+                if (apenasPendentes && isPago) visivel = false;
+
+                if (visivel) {
+                    tr.style.display = '';
+                    if (tipo === 'receita') {
+                        receita += valor;
+                    } else {
+                        despesa += valor;
+                        if (isPago) pago += valor;
+                        else pendente += valor;
+                    }
+                } else {
+                    tr.style.display = 'none';
+                }
             });
+
+            // Atualiza os valores visuais dos cards
+            document.getElementById('valReceita').textContent = fmtMoeda.format(receita);
+            document.getElementById('valDespesa').textContent = fmtMoeda.format(despesa);
+            document.getElementById('valSaldo').textContent = fmtMoeda.format(receita - despesa);
+            document.getElementById('valPago').textContent = fmtMoeda.format(pago);
+            document.getElementById('valPendente').textContent = fmtMoeda.format(pendente);
+        }
+
+        selMes.addEventListener('change', aplicarFiltros);
+        selAno.addEventListener('change', aplicarFiltros);
+        checkPendente.addEventListener('change', aplicarFiltros);
+
+        // Define o mês e ano atual automaticamente como padrão ao carregar
+        window.addEventListener('DOMContentLoaded', () => {
+            const hoje = new Date();
+            const mesAtual = String(hoje.getMonth() + 1).padStart(2, '0');
+            const anoAtual = String(hoje.getFullYear());
+            
+            if (document.querySelector(`#filtroMes option[value="${mesAtual}"]`)) {
+                selMes.value = mesAtual;
+            }
+            if (document.querySelector(`#filtroAno option[value="${anoAtual}"]`)) {
+                selAno.value = anoAtual;
+            }
+            aplicarFiltros();
         });
     </script>
 </body>
