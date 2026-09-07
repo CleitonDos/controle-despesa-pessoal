@@ -25,6 +25,8 @@
     </dependencies>
 
     <build>
+        <!-- Aponta diretamente para a pasta src enviada -->
+        <sourceDirectory>src</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
