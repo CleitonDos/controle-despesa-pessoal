@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Controle Financeiro • Dark Mode</title>
+
+    <!-- Ícone da aba do navegador (Favicon) e tela inicial do celular -->
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2488/2488749.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2488/2488749.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: #0b0d14; min-height: 100vh; padding: 20px; display: flex; justify-content: center; align-items: flex-start; color: #e8edf5; }
+        .container { max-width: 1360px; width: 100%; background: #121626; border-radius: 16px; padding: 28px 32px 24px; border: 1px solid #1e2640; box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6); }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+        .header-left { display: flex; align-items: center; gap: 14px; }
+        .header-left .logo-icon { display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; background: linear-gradient(135deg, #7c3aed, #00d2ff); border-radius: 10px; color: #0b0d14; font-size: 20px; }
+        .header-left h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; background: linear-gradient(135deg, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .header-left .barra { width: 4px; height: 32px; background: linear-gradient(180deg, #7c3aed, #00d2ff); border-radius: 4px; }
+        .btn-lancar { background: #00d2ff; color: #0b0d14; border: none; padding: 10px 24px; border-radius: 50px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.25s; font-family: 'Inter', sans-serif; }
+        .btn-lancar:hover { transform: scale(1.03); box-shadow: 0 4px 20px rgba(0, 210, 255, 0.30); }
+        
+        .metricas-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 18px; }
+        .card-metrica { background: #1c223a; border-radius: 12px; padding: 14px 16px; border: 1px solid #282f4a; text-align: center; }
+        .card-metrica .label { display: flex; align-items: center; justify-content: center; gap: 6px; color: #8892a8; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        .card-metrica .valor { font-size: 20px; font-weight: 700; margin-top: 2px; }
+        .valor.entrada { color: #10b981; } .valor.saida, .valor.saldo { color: #f43f5e; } .valor.pago { color: #00d2ff; } .valor.pendente { color: #fbbf24; }
+        
+        .filtros-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; background: #1c223a; border-radius: 12px; padding: 14px 20px; margin-bottom: 22px; border: 1px solid #282f4a; }
+        .filtro-checkbox { display: flex; align-items: center; gap: 6px; color: #8892a8; font-size: 13px; cursor: pointer; }
+
+        .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid #1e2640; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 850px; }
+        thead { background: #0f1322; }
+        thead th { padding: 12px 14px; text-align: left; color: #5c9df5; font-weight: 600; font-size: 12px; text-transform: uppercase; border-bottom: 1px solid #1e2640; }
+        tbody td { padding: 10px 14px; border-bottom: 1px solid #232a42; color: #c8d0e0; vertical-align: middle; }
+
+        .badge-tipo { display: inline-flex; align-items: center; gap: 4px; padding: 3px 14px; border-radius: 50px; font-size: 12px; font-weight: 600; }
+        .badge-tipo.receita { background: rgba(16, 185, 129, 0.12); color: #10b981; }
+        .badge-tipo.despesa { background: rgba(244, 63, 94, 0.12); color: #f43f5e; }
+        .badge-tipo.cofre { background: rgba(92, 157, 245, 0.10); color: #5c9df5; }
+        .badge-cat { padding: 2px 12px; border-radius: 50px; font-size: 11px; font-weight: 600; border: 1px solid #282f4a; }
+        .badge-cat.fixa { color: #5c9df5; } .badge-cat.variavel { color: #fbbf24; }
+        .valor-positivo { color: #10b981; font-weight: 600; } .valor-negativo { color: #f43f5e; font-weight: 600; }
+        tbody tr.receita-row { background: rgba(16, 185, 129, 0.04); } tbody tr.pago-row { background: rgba(0, 210, 255, 0.04); }
+
+        .btn-acao { background: none; border: none; cursor: pointer; padding: 6px; font-size: 14px; border-radius: 6px; transition: 0.2s; }
+        .btn-edit { color: #5c9df5; } .btn-edit:hover { background: rgba(92,157,245,0.15); }
+        .btn-del { color: #f43f5e; } .btn-del:hover { background: rgba(244,63,94,0.15); }
+        .input-inline-date { background: #0f1322; border: 1px solid #282f4a; color: #e8edf5; padding: 4px 6px; border-radius: 6px; font-size: 12px; }
+        .btn-inline-check { background: #10b981; color: #0b0d14; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 11px; font-weight: 700; margin-left: 4px; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(4px); }
+        .modal-content { background: #121626; border: 1px solid #1e2640; border-radius: 16px; padding: 24px; width: 90%; max-width: 450px; box-shadow: 0 12px 48px rgba(0,0,0,0.6); }
+        .modal-content h2 { margin-bottom: 20px; font-size: 18px; color: #e8edf5; border-bottom: 1px solid #282f4a; padding-bottom: 12px; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 12px; color: #8892a8; margin-bottom: 6px; font-weight: 600; }
+        .form-group input, .form-group select { width: 100%; background: #0f1322; border: 1px solid #282f4a; border-radius: 8px; padding: 10px; color: #e8edf5; font-size: 14px; outline: none; }
+        .form-group input:focus, .form-group select:focus { border-color: #00d2ff; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }
+        .btn-cancelar { background: transparent; color: #8892a8; border: 1px solid #282f4a; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn-salvar { background: #00d2ff; color: #0b0d14; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 700; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <div class="logo-icon"><i class="fas fa-wallet"></i></div>
+                <div class="barra"></div>
+                <h1>Controle Financeiro</h1>
+            </div>
+            <button class="btn-lancar" id="btnAbrirModal">
+                <i class="fas fa-plus"></i> Novo Lançamento
+            </button>
+        </div>
+
+        <div class="metricas-row">
+            <div class="card-metrica"><div class="label"><i class="fas fa-arrow-down" style="color: #10b981;"></i> Receita</div><div class="valor entrada">{{TOTAL_RECEITA}}</div></div>
+            <div class="card-metrica"><div class="label"><i class="fas fa-arrow-up" style="color: #f43f5e;"></i> Despesa</div><div class="valor saida">{{TOTAL_DESPESA}}</div></div>
+            <div class="card-metrica"><div class="label"><i class="fas fa-scale-balanced" style="color: #f43f5e;"></i> Saldo</div><div class="valor saldo">{{SALDO}}</div></div>
+            <div class="card-metrica"><div class="label"><i class="fas fa-check-circle" style="color: #00d2ff;"></i> Total Pago</div><div class="valor pago">{{TOTAL_PAGO}}</div></div>
+            <div class="card-metrica"><div class="label"><i class="fas fa-clock" style="color: #fbbf24;"></i> Total Pendente</div><div class="valor pendente">{{TOTAL_PENDENTE}}</div></div>
+        </div>
+
+        <div class="filtros-row">
+            <label class="filtro-checkbox">
+                <input type="checkbox" id="pendente">
+                <span>Mostrar Apenas Pendentes</span>
+            </label>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-align-left"></i> DESCRIÇÃO</th>
+                        <th><i class="fas fa-tag"></i> TIPO</th>
+                        <th><i class="fas fa-folder"></i> CATEGORIA</th>
+                        <th><i class="fas fa-dollar-sign"></i> VALOR</th>
+                        <th><i class="fas fa-calendar-day"></i> VENCIMENTO</th>
+                        <th><i class="fas fa-calendar-check"></i> PAGAMENTO</th>
+                        <th style="text-align: center;"><i class="fas fa-cog"></i> AÇÕES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{LINHAS_TABELA}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MODAL CADASTRO -->
+    <div class="modal-overlay" id="modalCadastro">
+        <div class="modal-content">
+            <h2><i class="fas fa-plus-circle" style="color: #00d2ff;"></i> Novo Lançamento</h2>
+            <form action="/cadastrar" method="POST">
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <input type="text" name="descricao" required placeholder="Ex: Conta de Luz">
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Tipo</label>
+                        <select name="tipo">
+                            <option value="despesa">Despesa</option>
+                            <option value="receita">Receita</option>
+                            <option value="cofre">Cofre</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Categoria</label>
+                        <select name="categoria">
+                            <option value="fixa">Fixa</option>
+                            <option value="variavel">Variável</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Valor (R$)</label>
+                    <input type="number" step="0.01" name="valor" required placeholder="0.00">
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Vencimento</label>
+                        <input type="date" name="dataVencimento" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Pagamento</label>
+                        <input type="date" name="dataPagamento">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancelar" onclick="fecharModal('modalCadastro')">Cancelar</button>
+                    <button type="submit" class="btn-salvar">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR -->
+    <div class="modal-overlay" id="modalEditar">
+        <div class="modal-content">
+            <h2><i class="fas fa-edit" style="color: #5c9df5;"></i> Editar Lançamento</h2>
+            <form action="/editar" method="POST">
+                <input type="hidden" name="id" id="edit-id">
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <input type="text" name="descricao" id="edit-descricao" required>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Tipo</label>
+                        <select name="tipo" id="edit-tipo">
+                            <option value="despesa">Despesa</option>
+                            <option value="receita">Receita</option>
+                            <option value="cofre">Cofre</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Categoria</label>
+                        <select name="categoria" id="edit-categoria">
+                            <option value="fixa">Fixa</option>
+                            <option value="variavel">Variável</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Valor (R$)</label>
+                    <input type="number" step="0.01" name="valor" id="edit-valor" required>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Vencimento</label>
+                        <input type="date" name="dataVencimento" id="edit-vencimento" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Pagamento</label>
+                        <input type="date" name="dataPagamento" id="edit-pagamento">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancelar" onclick="fecharModal('modalEditar')">Cancelar</button>
+                    <button type="submit" class="btn-salvar">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function fecharModal(id) { document.getElementById(id).style.display = 'none'; }
+        
+        document.getElementById('btnAbrirModal').addEventListener('click', () => {
+            document.getElementById('modalCadastro').style.display = 'flex';
+        });
+
+        function abrirEditar(id, desc, tipo, cat, valor, venc, pag) {
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-descricao').value = desc;
+            document.getElementById('edit-tipo').value = tipo;
+            document.getElementById('edit-categoria').value = cat;
+            document.getElementById('edit-valor').value = valor;
+            document.getElementById('edit-vencimento').value = venc;
+            document.getElementById('edit-pagamento').value = pag;
+            document.getElementById('modalEditar').style.display = 'flex';
+        }
+
+        const checkboxPendente = document.getElementById('pendente');
+        checkboxPendente.addEventListener('change', function() {
+            const pendentes = this.checked;
+            document.querySelectorAll('tbody tr').forEach(tr => {
+                const isPendente = tr.getAttribute('data-pago') === 'false';
+                tr.style.display = pendentes ? (isPendente ? '' : 'none') : '';
+            });
+        });
+    </script>
+</body>
+</html>
