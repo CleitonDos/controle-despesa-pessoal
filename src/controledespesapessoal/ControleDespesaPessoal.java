@@ -178,25 +178,54 @@ public class ControleDespesaPessoal {
     }
 
     // CADASTRO
+    // CADASTRO COM SUPORTE A PARCELAS
     static class CadastroHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
                 Map<String, String> dados = extrairParams(exchange);
                 try {
-                    Despesa d = new Despesa();
-                    d.setDescricao(URLDecoder.decode(dados.getOrDefault("descricao", ""), StandardCharsets.UTF_8));
-                    d.setTipo(dados.get("tipo"));
-                    d.setCategoria(dados.get("categoria"));
-                    d.setValor(Double.parseDouble(dados.getOrDefault("valor", "0").replace(",", ".")));
-                    d.setDataVencimento(LocalDate.parse(dados.get("dataVencimento")));
+                    String descBase = URLDecoder.decode(dados.getOrDefault("descricao", ""), StandardCharsets.UTF_8);
+                    String tipo = dados.get("tipo");
+                    String categoria = dados.get("categoria");
+                    double valor = Double.parseDouble(dados.getOrDefault("valor", "0").replace(",", "."));
+                    LocalDate dataVencBase = LocalDate.parse(dados.get("dataVencimento"));
+
+                    // Quantidade de parcelas (padrão 1 se vier vazio)
+                    String parcelasStr = dados.getOrDefault("parcelas", "1");
+                    int totalParcelas = 1;
+                    try {
+                        totalParcelas = Integer.parseInt(parcelasStr);
+                        if (totalParcelas < 1) totalParcelas = 1;
+                    } catch (NumberFormatException e) {
+                        totalParcelas = 1;
+                    }
 
                     String dataPag = dados.get("dataPagamento");
-                    if (dataPag != null && !dataPag.trim().isEmpty()) {
-                        d.setDataPagamento(LocalDate.parse(dataPag));
+                    LocalDate dataPagamento = (dataPag != null && !dataPag.trim().isEmpty()) 
+                            ? LocalDate.parse(dataPag) 
+                            : null;
+
+                    // Se for apenas 1 parcela (à vista / sem repetição)
+                    if (totalParcelas == 1) {
+                        Despesa d = new Despesa(descBase, tipo, categoria, valor, dataVencBase, dataPagamento);
+                        dao.inserir(d);
+                    } else {
+                        // Se for parcelado, gera todas as parcelas avançando os meses
+                        for (int i = 1; i <= totalParcelas; i++) {
+                            String descParcelada = String.format("%s (%02d/%02d)", descBase, i, totalParcelas);
+                            LocalDate vencimentoParcela = dataVencBase.plusMonths(i - 1);
+                            
+                            // Apenas a 1ª parcela recebe a data de pagamento se ela foi preenchida agora
+                            LocalDate pagParcela = (i == 1) ? dataPagamento : null;
+
+                            Despesa d = new Despesa(descParcelada, tipo, categoria, valor, vencimentoParcela, pagParcela);
+                            dao.inserir(d);
+                        }
                     }
-                    dao.inserir(d);
+
                 } catch (Exception e) {
+                    System.err.println("Erro ao cadastrar: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -301,4 +330,6 @@ public class ControleDespesaPessoal {
             // Conexão encerrada pelo cliente durante redirect
         }
     }
+    
+    
 }
